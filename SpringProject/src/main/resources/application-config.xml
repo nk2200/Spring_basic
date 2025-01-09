@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+<!-- 빈 생성 및 의존성 주입 설정 -->
+<!-- 빈 생성 설정은 bean 태그를 사용 -->
+<!--<context:component-scan base-package="com.example.myapp"></context:component-scan>-->
+
+<bean id="memberService" class="com.example.myapp.member.MemberService"></bean>
+<bean id="memberController" class="com.example.myapp.member.MemberController">
+	<constructor-arg name="memberService" ref="memberService"></constructor-arg>
+</bean>
+
+<bean id="empService" class="com.example.myapp.emp.EmpService"></bean>
+<bean id="empController" class="com.example.myapp.emp.EmpController">
+	<constructor-arg name="empService" ref="empService"></constructor-arg>
+</bean>
+
+<!--<bean id="helloService" class="com.example.myapp.di.HelloService"></bean>
+ HelloService helloService = new HelloService();와 같음. 
+<bean id="helloController" class="com.example.myapp.di.HelloController">
+	<constructor-arg ref="helloService"></constructor-arg>
+</bean>-->
+
+<bean id="helloService" class="com.example.myapp.aop.HelloService"></bean>
+<!-- HelloService helloService = new HelloService();와 같음. -->
+<bean id="helloController" class="com.example.myapp.aop.HelloController">
+	<constructor-arg name="helloService" ref="helloService"></constructor-arg>
+</bean>
+
+<bean id="helloLog" class="com.example.myapp.aop.HelloLog"></bean>
+
+<aop:aspectj-autoproxy/>
+
+<!--<aop:config>
+	<aop:pointcut id="hello" expression="execution(* com.example.myapp.aop.HelloService.sayHello(..))" />
+	<aop:aspect ref="helloLog">
+		<aop:before method="log" pointcut-ref="hello"/>
+	</aop:aspect>
+</aop:config>-->
+
+<!-- <bean id="dataSource" class="com.example.myapp.database.BasicDataSource">
+	<constructor-arg value="oracle.jdbc.OracleDriver"></constructor-arg>
+	<constructor-arg value="jdbc:oracle:thin:@localhost:1521:xe"></constructor-arg>
+</bean> -->
+</beans>
