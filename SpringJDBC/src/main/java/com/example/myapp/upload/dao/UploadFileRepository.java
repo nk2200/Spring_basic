@@ -26,13 +26,10 @@ public class UploadFileRepository implements IUploadFileRepository {
 			file.setFileId(rs.getInt("file_id"));
 			file.setCategoryName(rs.getString("category_name"));
 			file.setFileName(rs.getString("file_name"));
+			file.setUuidFileName(rs.getString("uuid_file_name"));
 			file.setFileSize(rs.getLong("file_size"));
 			file.setFileContentType(rs.getString("file_content_type"));
 			file.setFileUploadDate(rs.getTimestamp("file_upload_date"));
-			try {
-				file.setFileData(rs.getBytes("file_data"));
-			} catch (Exception e) {
-			}
 			return file;
 		}
 
@@ -46,16 +43,16 @@ public class UploadFileRepository implements IUploadFileRepository {
 
 	@Override
 	public void uploadFile(UploadFile file) {
-		String sql = "insert into upload_file " + "(file_id,	category_name,	file_name,	file_size,	"
-				+ "	file_content_type,	file_upload_date,	file_data)	"
-				+ "values	(?,	?,	?,	?,	?,	SYSTIMESTAMP,	?)";
-		jdbcTemplate.update(sql, file.getFileId(), file.getCategoryName(), file.getFileName(), file.getFileSize(),
-				file.getFileContentType(), file.getFileData());
+		String sql = "insert into upload_file " + "(file_id,	category_name,	file_name,	uuid_file_name,file_size,	"
+				+ "	file_content_type,	file_upload_date)	"
+				+ "values	(?,	?,	?,	?,	?,	?, SYSTIMESTAMP)";
+		jdbcTemplate.update(sql, file.getFileId(), file.getCategoryName(), file.getFileName(), file.getUuidFileName(),file.getFileSize(),
+				file.getFileContentType());
 	}
 
 	@Override
 	public List<UploadFile> getAllFileList() {
-		String sql = "SELECT	file_id,	category_name,	file_name,	file_size,	"
+		String sql = "SELECT	file_id,	category_name,	file_name,	uuid_file_name, file_size,	"
 				+ "	file_content_type,	file_upload_date	" + "	FROM	upload_file	"
 				+ "	ORDER	BY	file_upload_date	DESC";
 		return jdbcTemplate.query(sql, new UploadFileMapper());
@@ -63,8 +60,8 @@ public class UploadFileRepository implements IUploadFileRepository {
 
 	@Override
 	public UploadFile getFile(int fileId) {
-		String sql = "SELECT	file_id,	category_name,	file_name,	file_size,	"
-				+ "	file_content_type,	file_upload_date,	file_data	" + "	FROM	upload_file	WHERE	file_id=?";
+		String sql = "SELECT	file_id,	category_name,	file_name,	uuid_file_name, file_size,	"
+				+ "	file_content_type,	file_upload_date" + "	FROM	upload_file	WHERE	file_id=?";
 		return jdbcTemplate.queryForObject(sql, new UploadFileMapper(), fileId);
 	}
 
@@ -72,6 +69,12 @@ public class UploadFileRepository implements IUploadFileRepository {
 	public void deleteFile(int fileId) {
 		String sql = "delete from upload_file where file_id=?";
 		jdbcTemplate.update(sql,fileId);
+	}
+
+	@Override
+	public String getUuidFileName(int fileId) {
+		String sql = "select uuid_file_name from upload_file where file_id=?";
+		return jdbcTemplate.queryForObject(sql, String.class,fileId);
 	}
 
 }

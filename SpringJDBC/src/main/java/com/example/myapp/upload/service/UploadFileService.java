@@ -35,4 +35,9 @@ public class UploadFileService implements IUploadFileService{
 		dao.deleteFile(fileId);
 	}
 
+	@Override
+	public String getUuidFileName(int fileId) {
+		return dao.getUuidFileName(fileId);
+	}
+
 }

@@ -6,7 +6,7 @@ import com.example.myapp.upload.model.UploadFile;
 
 public interface IUploadFileRepository {
 
-	int getMaxFileId();
+	int getMaxFileId(); //파일 아이디 증가위해
 
 	void uploadFile(UploadFile file);
 
@@ -15,4 +15,5 @@ public interface IUploadFileRepository {
 	UploadFile getFile(int fileId);
 
 	void deleteFile(int fileId);
+	String getUuidFileName(int fileId);
 }

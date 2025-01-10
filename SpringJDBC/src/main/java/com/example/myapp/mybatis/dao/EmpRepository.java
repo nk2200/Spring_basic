@@ -1,4 +1,4 @@
-package com.example.myapp.hr.dao;
+package com.example.myapp.mybatis.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.myapp.hr.model.Emp;
 
-//@Repository
+@Repository
 public class EmpRepository implements IEmpRepository {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -49,21 +49,6 @@ public class EmpRepository implements IEmpRepository {
 	public int getEmpCount(int deptid) {
 		String sql = "SELECT COUNT(*) FROM employees WHERE department_id=?";
 		return jdbcTemplate.queryForObject(sql, Integer.class, deptid);
-	}
-
-	@Override
-	public List<Map<String, Object>> getEmpListMap() {
-		String sql = "SELECT employee_id, first_name, last_name, email, "
-				+ "phone_number, hire_date, job_id, salary, commission_pct, "
-				+ "manager_id, department_id FROM employees";
-		return jdbcTemplate.queryForList(sql);
-	}
-
-	@Override
-	public Map<String, Object> getEmpInfoMap(int empid) {
-		String sql = "SELECT employee_id, first_name, last_name, " + "email, phone_number, hire_date, job_id, salary, "
-				+ "commission_pct, manager_id, department_id " + "FROM employees WHERE employee_id=?";
-		return jdbcTemplate.queryForMap(sql, empid);
 	}
 
 	@Override

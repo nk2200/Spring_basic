@@ -9,4 +9,5 @@ public interface IUploadFileService {
 	List<UploadFile> getAllFileList();
 	UploadFile getFile(int fileId);
 	void deleteFile(int fileId);
+	String getUuidFileName(int fileId);
 }

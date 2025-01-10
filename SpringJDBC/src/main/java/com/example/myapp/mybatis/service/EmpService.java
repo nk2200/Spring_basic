@@ -1,4 +1,4 @@
-package com.example.myapp.hr.service;
+package com.example.myapp.mybatis.service;
 
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.myapp.hr.dao.IEmpRepository;
 import com.example.myapp.hr.model.Emp;
 
-//@Service
+@Service
 public class EmpService implements IEmpService{
 	@Autowired
 	IEmpRepository empRepository;
@@ -24,16 +24,6 @@ public class EmpService implements IEmpService{
 	@Override
 	public int getEmpCount(int deptid) {
 		return empRepository.getEmpCount(deptid);
-	}
-
-	@Override
-	public List<Map<String, Object>> getEmpListMap() {
-		return empRepository.getEmpListMap();
-	}
-
-	@Override
-	public Map<String, Object> getEmpInfoMap(int empid) {
-		return empRepository.getEmpInfoMap(empid);
 	}
 
 	@Override

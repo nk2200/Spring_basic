@@ -1,4 +1,4 @@
-package com.example.myapp.hr.controller;
+package com.example.myapp.mybatis.controller;
 
 import java.util.List;
 
@@ -21,12 +21,12 @@ import com.example.myapp.hr.service.IEmpService;
 
 import oracle.jdbc.proxy.annotation.Post;
 
-//@Controller
+@Controller
 public class EmpController {
 	@Autowired
 	IEmpService empService;
 	
-	@GetMapping({"/hr/count","/hr/cnt"})
+	@GetMapping({"/mybatis/count","/mybatis/cnt"})
 	public String empCount(@RequestParam(value="deptid",required=false,
 	defaultValue = "0") int deptid,Model model) {
 		if(deptid==0) { //모든 사원의 수
@@ -37,19 +37,19 @@ public class EmpController {
 			model.addAttribute("count",result);
 		}
 		
-		return "hr/count";    //WEB-INF/views/hr/count.jsp
+		return "mybatis/count";    //WEB-INF/views/mybatis/count.jsp
 	}
 
-	@GetMapping("/hr/list")
+	@GetMapping("/mybatis/list")
 	public String getAllEmps(Model model) {
 		List<Emp> empList = empService.getEmpList();
 //		System.out.println(empList);
 		model.addAttribute("empList", empList);
-		return "hr/list";
+		return "mybatis/list";
 		
 	}
 	
-	@GetMapping("/hr/{employeeId}")
+	@GetMapping("/mybatis/{employeeId}")
 	public String getEmpInfo(@PathVariable int employeeId, Model model) {
 		
 		try {
@@ -58,19 +58,19 @@ public class EmpController {
 		}catch(EmptyResultDataAccessException e	){
 			throw new RuntimeException("사원이 없습니다");
 		}
-		return "hr/view";
+		return "mybatis/view";
 	}
 	
-	@GetMapping("/hr/insert")
+	@GetMapping("/mybatis/insert")
 	public String insertEmp(Model model) {
 		model.addAttribute("deptList", empService.getAllDeptId());
 		model.addAttribute("jobList", empService.getAllJobId());
 		model.addAttribute("managerList", empService.getAllManagerId());
 		System.out.println(empService.getAllDeptId());
-		return "hr/insertform";
+		return "mybatis/insertform";
 	}
 	
-	@PostMapping("/hr/insert")
+	@PostMapping("/mybatis/insert")
 	public String insertEmp(Emp emp, RedirectAttributes redirectAttrs) {
 		try {
 			System.out.println(emp.toString());
@@ -80,20 +80,20 @@ public class EmpController {
 		}catch(RuntimeException e) {
 			redirectAttrs.addFlashAttribute("message", e.getMessage());
 		}
-		return "redirect:/hr/list";
+		return "redirect:/mybatis/list";
 	}
 	
-	@GetMapping("/hr/update")
+	@GetMapping("/mybatis/update")
 	public String updateEmp(int empid, Model model) {
 		model.addAttribute("emp", empService.getEmpInfo(empid));
 		model.addAttribute("deptList", empService.getAllDeptId());
 		model.addAttribute("jobList", empService.getAllJobId());
 		model.addAttribute("managerList", empService.getAllManagerId());
 		
-		return "hr/updateform";
+		return "mybatis/updateform";
 	}
 	
-	@PostMapping("/hr/update")
+	@PostMapping("/mybatis/update")
 	public String updateEmp(RedirectAttributes redirectAttr, Emp emp) {
 		try {
 			empService.updateEmp(emp);
@@ -101,14 +101,14 @@ public class EmpController {
 		}catch(RuntimeException e) {
 			redirectAttr.addFlashAttribute("message", e.getMessage());
 		}
-		return "redirect:/hr/"+emp.getEmployeeId();
+		return "redirect:/mybatis/"+emp.getEmployeeId();
 	}
-	@GetMapping("/hr/delete")
+	@GetMapping("/mybatis/delete")
 	public String deleteEmp(int empid, Model model) {
 		model.addAttribute("emp", empService.getEmpInfo(empid));
-		return "hr/deleteform";
+		return "mybatis/deleteform";
 	}
-	@PostMapping("/hr/delete")
+	@PostMapping("/mybatis/delete")
 	public String deleteEmp(int empid, String email, RedirectAttributes rdAttr, Model model) {
 		System.out.println(empid+", "+email);
 		try {
@@ -116,17 +116,17 @@ public class EmpController {
 			if(deleteRow>0) {
 				System.out.println("success");
 				rdAttr.addFlashAttribute("message", empid+"번 사원 딜리트 완료");
-				return "redirect:/hr/list";
+				return "redirect:/mybatis/list";
 			}else {
 				System.out.println("fail");
 				model.addAttribute("message", "id 또는 email이 다릅니다.");
 				model.addAttribute("emp", empService.getEmpInfo(empid));
-				return "hr/deleteform";
+				return "mybatis/deleteform";
 			}
 		}catch(RuntimeException e) {
 			System.out.println("exception");
 			model.addAttribute("message", e.getMessage());
-			return "hr/deleteform";
+			return "mybatis/deleteform";
 		}
 	}
 	

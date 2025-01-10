@@ -12,8 +12,9 @@ public class UploadFile {
 	private	int	fileId;
 	private	String	categoryName;
 	private	String	fileName;
+	private String uuidFileName;
 	private	long	fileSize;
 	private	String	fileContentType;
 	private	Timestamp fileUploadDate;
-	private	byte[]	fileData;
+//	private	byte[]	fileData;
 }
